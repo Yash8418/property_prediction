@@ -1,0 +1,7 @@
+
+for backend :
+terminal -> command prompt -> cd backend -> venv\Scripts\activate ->{{ pip install -r requirements.txt -> python multi_scraper.py
+-> python train_model.py (train the model)}} -> uvicorn main:app --reload
+
+for frontend: 
+terminal -> cd frontend -> (npm i ) -> npm start
