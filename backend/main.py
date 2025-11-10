@@ -4,9 +4,10 @@ import sqlite3
 import time
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import pandas as pd
-from fastapi.responses import JSONResponse
 
 app = FastAPI(title="India Real Estate Price Predictor")
 
@@ -22,6 +23,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve React build static files
+app.mount("/static", StaticFiles(directory="frontend_build/static"), name="static")
+
+@app.get("/")
+async def serve_frontend():
+    index_path = os.path.join("frontend_build", "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    else:
+        return {"message": "Frontend build not found."}
+
 
 # -------------------- DATABASE --------------------
 def init_db():
@@ -54,8 +67,7 @@ def get_model():
         raise HTTPException(status_code=500, detail="Model not found. Train model first.")
     return joblib.load(MODEL_PATH)
 
-
-# ✅ Centralized prediction logic (Updated to use CSV data)
+# Centralized prediction logic (Updated to use CSV data)
 def make_prediction(req):
     city_data_path = os.path.join("data", "city_price_per_sqft_stats.csv")
 
@@ -81,6 +93,7 @@ def make_prediction(req):
     total_price_inr = avg_price_per_sqft_inr * req.area_sqft
 
     return total_price_inr, avg_price_per_sqft_inr
+
 
 # -------------------- API ROUTES --------------------
 @app.get("/states")
@@ -124,28 +137,24 @@ class ForecastRequest(BaseModel):
 def predict(req: PropertyRequest):
     city_data_path = os.path.join("data", "city_price_per_sqft_stats.csv")
 
-    # ✅ Check for city data file
     if not os.path.exists(city_data_path):
         return JSONResponse(status_code=404, content={"error": "Data not found"})
 
     df_prices = pd.read_csv(city_data_path)
     available_cities = df_prices["City"].str.strip().str.lower().unique().tolist()
 
-    # ✅ Validate city availability
     if req.city and req.city.strip().lower() not in available_cities:
         return JSONResponse(
             status_code=200,
             content={"message": f"🏗️ Still working on adding data for {req.city}!"}
         )
 
-    # ✅ Make base prediction safely
     try:
         total_price_now, price_per_sqft_now = make_prediction(req)
     except Exception as e:
         print("Prediction error:", e)
         return JSONResponse(status_code=500, content={"error": "Prediction failed."})
 
-    # ✅ Furnishing adjustment (works for both bool & string)
     furnished_factor = 1.0
     furnished_text = str(req.furnished or "").strip().lower()
 
@@ -159,7 +168,6 @@ def predict(req: PropertyRequest):
     total_price_now *= furnished_factor
     price_per_sqft_now *= furnished_factor
 
-    # ✅ Save prediction in DB
     try:
         cur = DB.cursor()
         cur.execute("""
@@ -184,7 +192,6 @@ def predict(req: PropertyRequest):
     except Exception as e:
         print("DB save failed:", e)
 
-    # ✅ Return final results
     return {
         "predicted_price": round(float(total_price_now), 2),
         "price_per_sqft": round(float(price_per_sqft_now), 2),
@@ -205,14 +212,12 @@ def predict_future(req: ForecastRequest):
     prop = req.property
     years_ahead = req.years_ahead or 0
 
-    # ✅ Check if city exists in database
     if prop.city and prop.city.strip().lower() not in available_cities:
         return JSONResponse(
             status_code=200,
             content={"message": f"🏗️ Still working on adding data for {prop.city}!"}
         )
 
-    # ✅ Base prediction safely
     try:
         total_price_now, price_per_sqft_now = make_prediction(prop)
     except Exception as e:
@@ -222,7 +227,6 @@ def predict_future(req: ForecastRequest):
             content={"error": "Prediction model failed. Please check your input values."}
         )
 
-    # ✅ Furnishing adjustment
     furnished_factor = 1.0
     furnished_text = str(prop.furnished or req.furnished or "").strip().lower()
 
@@ -236,12 +240,10 @@ def predict_future(req: ForecastRequest):
     total_price_now *= furnished_factor
     price_per_sqft_now *= furnished_factor
 
-    # ✅ Apply yearly growth for the future
     growth_rate = ANNUAL_APPRECIATION_RATE
     future_price = total_price_now * ((1 + growth_rate) ** years_ahead)
     future_price_per_sqft = price_per_sqft_now * ((1 + growth_rate) ** years_ahead)
 
-    # ✅ Save to database (safe execution)
     try:
         cur = DB.cursor()
         cur.execute("""
@@ -266,15 +268,12 @@ def predict_future(req: ForecastRequest):
     except Exception as e:
         print("DB save failed:", e)
 
-    # ✅ Return clean JSON result
     return {
         "predicted_price": round(float(future_price), 2),
         "price_per_sqft": round(float(future_price_per_sqft), 2),
         "furnished_factor": furnished_factor,
         "years_ahead": years_ahead
     }
-
-
 
 @app.get("/history")
 def history(limit: int = 50):
