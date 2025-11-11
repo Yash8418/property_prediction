@@ -16,20 +16,29 @@ DATA_PATH = os.path.join("data", "india_housing_prices.csv")
 DB_PATH = "predictions.db"
 ANNUAL_APPRECIATION_RATE = 0.07  # 7% yearly growth assumption
 
-origins = [
-    "https://realestate-predictor.onrender.com",
-    "https://property-prediction-a9pk.onrender.com",
-]
+# origins = [
+#     "https://realestate-predictor.onrender.com",
+#     "https://property-prediction-a9pk.onrender.com",
+# ]
 
 
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=[
+        "https://realestate-predictor.onrender.com",
+        "https://property-prediction-a9pk.onrender.com"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 # Serve React build static files
 app.mount("/static", StaticFiles(directory="frontend_build/static"), name="static")
