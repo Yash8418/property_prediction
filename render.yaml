@@ -16,4 +16,4 @@ services:
     startCommand: npm run start
     envVars:
       - key: REACT_APP_API_URL
-        value: https://price-predictor-backend.onrender.com
+        value: https://property-prediction-a9pk.onrender.com
