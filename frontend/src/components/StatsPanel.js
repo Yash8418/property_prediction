@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+// const API_BASE = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+  const API_BASE = process.env.REACT_APP_API_URL || "https://property-prediction-a9pk.onrender.com";
+
 
 export default function StatsPanel({ city }) {
   const [stats, setStats] = useState([]);
