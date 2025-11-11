@@ -5,7 +5,9 @@ import MapView from "./MapView";
 import "./Tooltip.css"; // ✅ new small CSS file for tooltip styles
 
 export default function PricePredictor() {
-  const API_BASE = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+  // const API_BASE = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+  const API_BASE = process.env.REACT_APP_API_URL || "https://property-prediction-a9pk.onrender.com";
+
 
   const [loc, setLoc] = useState({});
   const [form, setForm] = useState({
