@@ -18,7 +18,9 @@ ANNUAL_APPRECIATION_RATE = 0.07  # 7% yearly growth assumption
 
 origins = [
     "http://localhost:3000",
-    "https://realestate-predictor.onrender.com"  # your frontend live site
+    # "https://realestate-predictor.onrender.com"  # your frontend live site
+    "https://realestate-predictor.onrender.com",
+    "https://property-prediction-a9pk.onrender.com",
 ]
 
 app.add_middleware(
