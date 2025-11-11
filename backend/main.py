@@ -32,8 +32,9 @@ ANNUAL_APPRECIATION_RATE = 0.07  # 7% yearly growth assumption
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "http://localhost:3000",
         "https://realestate-predictor.onrender.com",
-        "https://property-prediction-a9pk.onrender.com"
+        "https://property-prediction-a9pk.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],

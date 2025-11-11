@@ -7,16 +7,18 @@ export default function LocationSelector({ onSelect }) {
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [area, setArea] = useState("");
-  // const API_BASE = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+  const [loadingStates, setLoadingStates] = useState(false);
+  const [loadingCities, setLoadingCities] = useState(false);
+
   const API_BASE = process.env.REACT_APP_API_URL || "https://property-prediction-a9pk.onrender.com";
 
-
-
   useEffect(() => {
+    setLoadingStates(true);
     axios
       .get(API_BASE + "/states")
       .then((res) => setStates(res.data.states))
-      .catch(() => setStates([]));
+      .catch(() => setStates([]))
+      .finally(() => setLoadingStates(false));
   }, [API_BASE]);
 
   const onStateChange = (s) => {
@@ -28,6 +30,7 @@ export default function LocationSelector({ onSelect }) {
       onSelect && onSelect({ state: "", city: "", area: "" });
       return;
     }
+    setLoadingCities(true);
     axios
       .get(`${API_BASE}/cities?state=${encodeURIComponent(s)}`)
       .then((res) => {
@@ -39,7 +42,8 @@ export default function LocationSelector({ onSelect }) {
       .catch(() => {
         setCities(["unknown"]);
         onSelect && onSelect({ state: s, city: "unknown", area });
-      });
+      })
+      .finally(() => setLoadingCities(false));
   };
 
   const onCityChange = (c) => {
@@ -56,13 +60,23 @@ export default function LocationSelector({ onSelect }) {
     <div>
       <div className="form-row">
         <label>State</label>
-        <select value={state} onChange={(e) => onStateChange(e.target.value)}>
+        <select
+          value={state}
+          onChange={(e) => onStateChange(e.target.value)}
+          disabled={loadingStates}
+        >
           <option value="">Select state</option>
-          {states.map((s) => (
-            <option key={s} value={s}>
-              {s}
+          {loadingStates ? (
+            <option value="" disabled>
+              <span className="loading">Loading...</span>
             </option>
-          ))}
+          ) : (
+            states.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))
+          )}
         </select>
       </div>
       <div className="form-row">
@@ -70,14 +84,20 @@ export default function LocationSelector({ onSelect }) {
         <select
           value={city}
           onChange={(e) => onCityChange(e.target.value)}
-          disabled={!state}
+          disabled={!state || loadingCities}
         >
           <option value="">Select city</option>
-          {cities.map((c) => (
-            <option key={c} value={c}>
-              {c}
+          {loadingCities ? (
+            <option value="" disabled>
+              <span className="loading">Loading...</span>
             </option>
-          ))}
+          ) : (
+            cities.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))
+          )}
         </select>
       </div>
       <div className="form-row">
