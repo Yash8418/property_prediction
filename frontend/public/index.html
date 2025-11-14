@@ -2,31 +2,89 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/favicon.svg" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#05668d" />
-    
-    <!-- SEO Meta Tags -->
-    <title>India Real Estate Price Predictor | Property Price AI</title>
-    <meta
-      name="description"
-      content="Predict property prices across Indian cities using verified housing data and machine learning. Find city and state average price per sqft, compare prices, and plan your next investment."
-    />
-    <meta
-      name="keywords"
-      content="India, real estate, price prediction, property, house, apartment, price per sqft, AI, city, state, investment, housing"
-    />
 
-    <!-- Apple and Manifest Meta -->
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!-- DNS Prefetch & Preconnect (Improves Performance) -->
+    <link rel="dns-prefetch" href="https://realestate-predictor.onrender.com" />
+    <link rel="preconnect" href="https://realestate-predictor.onrender.com" crossorigin>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/favicon.svg" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/investment.png" />
+
+    <!-- Manifest for PWA support -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <!-- Canonical Link (for SEO) -->
+    <!-- Primary SEO Meta Tags -->
+    <title>India Real Estate Price Predictor | AI Property Price Estimator</title>
+
+    <meta name="description" content="AI-powered India Real Estate Price Predictor that estimates house and apartment prices using machine learning. Compare property rates by city, state, and locality. Updated with latest market data and investment insights." />
+
+    <meta name="keywords" content="India real estate, property price predictor, AI real estate, machine learning price prediction, house price india, apartment price india, real estate investment tool, city price comparison, india housing market, property valuation AI" />
+
+    <meta name="author" content="Yash Prajapati" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#05668d" />
+
+    <!-- Canonical URL -->
     <link rel="canonical" href="https://realestate-predictor.onrender.com/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AI Property Price Predictor | Real Estate Price Estimation India" />
+    <meta property="og:description" content="Predict property prices with AI across Indian cities. Compare state-wise and city-wise property rates, price-per-sqft, and investment insights." />
+    <meta property="og:url" content="https://realestate-predictor.onrender.com/" />
+    <meta property="og:image" content="%PUBLIC_URL%/investment.png" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:site_name" content="India Real Estate Price Predictor" />
+
+    <!-- Twitter Meta -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="India Real Estate Price Predictor | AI Property Price Estimator" />
+    <meta name="twitter:description" content="Predict property prices across India with AI. Get accurate valuations and compare city/state real estate prices." />
+    <meta name="twitter:image" content="%PUBLIC_URL%/investment.png" />
+
+    <!-- Robots (Boost SEO) -->
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow" />
+
+    <!-- Schema.org JSON-LD: Website Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "India Real Estate Price Predictor",
+      "url": "https://realestate-predictor.onrender.com/",
+      "description": "AI-powered tool to predict real estate prices across India using machine learning and verified market data.",
+      "applicationCategory": "RealEstateApplication",
+      "operatingSystem": "All",
+      "creator": {
+        "@type": "Person",
+        "name": "Yash Prajapati"
+      },
+      "image": "%PUBLIC_URL%/investment.png"
+    }
+    </script>
+
+    <!-- Schema.org JSON-LD: Breadcrumbs (boosts ranking) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://realestate-predictor.onrender.com/"
+        }
+      ]
+    }
+    </script>
   </head>
+
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root" role="main"></div>
   </body>
 </html>
